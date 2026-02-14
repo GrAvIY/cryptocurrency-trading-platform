@@ -1,0 +1,173 @@
+/* Liquid Glass iOS 26 Theme */
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --glass-blur: blur(20px);
+    --primary-gradient: linear-gradient(135deg, #00cc93 0%, #00b09b 100%);
+    --danger-gradient: linear-gradient(135deg, #f74745 0%, #d83030 100%);
+    --text-primary: #ffffff;
+    --text-secondary: #aaaaaa;
+    --bg-dark: #0b0e11;
+}
+
+body.crypt-dark {
+    background-color: var(--bg-dark);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Glass Card */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 24px;
+    padding: 2rem;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.glass-panel:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Table overrides */
+.glass-table {
+    width: 100%;
+    color: var(--text-primary);
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.glass-table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    padding: 1rem;
+    border: none;
+}
+
+.glass-table td {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.glass-table td:first-child {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.glass-table td:last-child {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+/* Inputs */
+.glass-input {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+    color: white !important;
+    padding: 12px 16px !important;
+}
+
+.glass-input:focus {
+    border-color: #00cc93 !important;
+    box-shadow: 0 0 0 2px rgba(0, 204, 147, 0.2) !important;
+}
+
+/* Buttons */
+.btn-glass-primary {
+    background: var(--primary-gradient);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    padding: 10px 24px;
+    box-shadow: 0 4px 15px rgba(0, 204, 147, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-glass-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 204, 147, 0.4);
+    color: white;
+}
+
+.btn-glass-danger {
+    background: var(--danger-gradient);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    padding: 10px 24px;
+    box-shadow: 0 4px 15px rgba(247, 71, 69, 0.3);
+}
+
+/* Modal */
+.modal-content.glass-modal {
+    background: #1a1e29;
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+}
+
+.modal-header,
+.modal-footer {
+    border: none;
+}
+
+/* Mobile Adaptation */
+@media (max-width: 768px) {
+
+    /* Admin Sidebar -> Bottom Nav */
+    .admin-sidebar {
+        top: auto;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        flex-direction: row;
+        justify-content: space-around;
+        padding-top: 0;
+        background: rgba(17, 17, 17, 0.95) !important;
+        border-right: none;
+        border-top: 1px solid var(--glass-border);
+    }
+
+    .admin-sidebar .nav-icon {
+        margin-bottom: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        font-size: 1.2rem;
+    }
+
+    .admin-sidebar .nav-icon:hover,
+    .admin-sidebar .nav-icon.active {
+        border-top: 2px solid var(--theme-yellow);
+        box-shadow: none !important;
+        background: transparent !important;
+        color: var(--theme-yellow) !important;
+    }
+
+    /* Content Adjustments */
+    .admin-content {
+        margin-left: 0;
+        margin-bottom: 70px;
+        /* Space for bottom nav */
+        padding: 20px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .glass-panel {
+        padding: 1.2rem;
+    }
+}

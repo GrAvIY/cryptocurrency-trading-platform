@@ -1,0 +1,402 @@
+/* welcome.css */
+
+/* Background */
+body {
+    background: radial-gradient(circle at top left, #1a1a2e, #0a0a0f);
+    overflow: hidden;
+    /* Prevent scrolling during presentation */
+}
+
+/* Background Animation Features */
+body::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    right: -10%;
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, rgba(0, 243, 255, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+    border-radius: 50%;
+    animation: pulseGlow 10s infinite alternate;
+    z-index: -1;
+}
+
+body::after {
+    content: '';
+    position: absolute;
+    bottom: -10%;
+    left: -10%;
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, rgba(0, 119, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+    border-radius: 50%;
+    animation: pulseGlow 8s infinite alternate-reverse;
+    z-index: -1;
+}
+
+@keyframes pulseGlow {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+/* Skip Button */
+.skip-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    color: var(--glass-text-secondary);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s;
+}
+
+.skip-btn:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Main Container */
+.welcome-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    max-width: 800px;
+    /* Max width constraint */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Slides Wrapper */
+.slides-wrapper {
+    flex: 1;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Slide Styling */
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s ease-in-out;
+    transform: translateX(50px);
+    /* Slide effect */
+    display: flex;
+    /* Centering content */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.slide.prev {
+    transform: translateX(-50px);
+    opacity: 0;
+}
+
+/* Content Styling */
+.slide-content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff, #a0a0c0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.slide-content .subtitle {
+    font-size: 1.1rem;
+    color: var(--glass-text-secondary);
+    margin-bottom: 2rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Logo Circle */
+.logo-circle {
+    width: 100px;
+    height: 100px;
+    background: rgba(0, 243, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+    color: var(--glass-accent);
+}
+
+/* Features List */
+.features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.feature-item {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px 20px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s;
+}
+
+.feature-item:hover {
+    transform: translateX(5px);
+    border-color: rgba(0, 243, 255, 0.3);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.feature-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 243, 255, 0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--glass-accent);
+}
+
+/* Security Icons */
+.security-features {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.security-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: var(--glass-text-secondary);
+}
+
+.security-item i {
+    font-size: 2rem;
+    color: var(--glass-accent-secondary);
+    margin-bottom: 5px;
+    filter: drop-shadow(0 0 10px rgba(0, 119, 255, 0.4));
+}
+
+/* Action Buttons for Final Slide */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 300px;
+    margin: 2rem auto 0;
+}
+
+.start-btn {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.login-btn {
+    height: 50px;
+    border: 1px solid var(--glass-border);
+    color: white;
+}
+
+.login-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* Controls Container (Bottom) */
+.controls-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 40px;
+    gap: 25px;
+}
+
+/* Indicators */
+.indicators {
+    display: flex;
+    gap: 10px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.dot.active {
+    width: 30px;
+    border-radius: 5px;
+    background: var(--glass-accent);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+}
+
+/* Nav Buttons */
+.nav-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.btn-nav {
+    background: transparent;
+    border: none;
+    color: white;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    opacity: 0.7;
+}
+
+.btn-nav:hover:not(:disabled) {
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.btn-nav:disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+}
+
+.next-btn {
+    color: var(--glass-accent);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 576px) {
+    .slide-content h1 {
+        font-size: 2rem;
+    }
+
+    .security-features {
+        gap: 1rem;
+    }
+
+    .security-item i {
+        font-size: 1.5rem;
+    }
+
+    .feature-item {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .welcome-container {
+        padding: 15px;
+    }
+
+    .controls-container {
+        padding-bottom: 20px;
+    }
+}
+
+/* Side Navigation Buttons */
+.side-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    color: var(--glass-text-secondary);
+    /* Or white */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s;
+    font-size: 1.2rem;
+}
+
+.side-nav:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--glass-accent);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+}
+
+.side-nav:disabled {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.prev-side {
+    left: 10px;
+}
+
+.next-side {
+    right: 10px;
+}
+
+/* Ensure buttons don't overlap content on mobile too much */
+@media (max-width: 576px) {
+    .side-nav {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+
+    .prev-side {
+        left: 5px;
+    }
+
+    .next-side {
+        right: 5px;
+    }
+}

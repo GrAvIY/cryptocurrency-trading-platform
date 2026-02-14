@@ -1,0 +1,16 @@
+# Файлы Firebase
+.firebase/
+firebase.json
+# Установки
+node_modules/
+# Локальные файлы
+.env
+.env.local
+# ОС
+.DS_Store
+Thumbs.db
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

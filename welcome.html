@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Добро пожаловать | FXBIT</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="images/favicon/favicon-32x32.png" type="image/x-icon">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/liquid-glass.css">
+    <link rel="stylesheet" href="css/welcome.css">
+</head>
+
+<body>
+
+    <!-- Skip Button -->
+    <button class="skip-btn" onclick="finishOnboarding()">Пропустить</button>
+
+    <!-- Slides Container -->
+    <div class="welcome-container">
+        <div class="slides-wrapper">
+            <!-- Side Navigation Buttons -->
+            <button class="side-nav prev-side" onclick="prevSlide()" id="prevSideBtn" disabled>
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="side-nav next-side" onclick="nextSlide()" id="nextSideBtn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <!-- Slide 1: Welcome -->
+            <div class="slide active" id="slide-1">
+                <div class="slide-content">
+                    <div class="logo-circle">
+                        <i class="fab fa-bitcoin fa-3x"></i>
+                    </div>
+                    <h1>Добро пожаловать в FXBIT</h1>
+                    <p class="subtitle">Современная криптовалютная платформа нового поколения</p>
+                    <div class="slide-image">
+                        <div class="abstract-shape"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Features -->
+            <div class="slide" id="slide-2">
+                <div class="slide-content">
+                    <h1>Все возможности в одном месте</h1>
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                            <span>Спот и фьючерсная торговля</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-sliders-h"></i></div>
+                            <span>Стоп-лосс и тейк-профит</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                            <span>Мгновенные транзакции</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Security -->
+            <div class="slide" id="slide-3">
+                <div class="slide-content">
+                    <h1>Ваша безопасность — наш приоритет</h1>
+                    <p class="subtitle">Мы используем передовые технологии защиты</p>
+                    <div class="security-features">
+                        <div class="security-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Шифрование</span>
+                        </div>
+                        <div class="security-item">
+                            <i class="fas fa-user-lock"></i>
+                            <span>2FA Защита</span>
+                        </div>
+                        <div class="security-item">
+                            <i class="fas fa-snowflake"></i>
+                            <span>Холодные кошельки</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Start -->
+            <div class="slide" id="slide-4">
+                <div class="slide-content">
+                    <h1>Готовы начать?</h1>
+                    <p class="subtitle">Создайте аккаунт и начните торговать уже сегодня</p>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary start-btn" onclick="finishOnboarding('register.html')">
+                            Зарегистрироваться
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                        <button class="btn btn-outline-light login-btn" onclick="finishOnboarding('login.html')">
+                            Уже есть аккаунт
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="controls-container">
+            <div class="indicators">
+                <span class="dot active" onclick="goToSlide(0)"></span>
+                <span class="dot" onclick="goToSlide(1)"></span>
+                <span class="dot" onclick="goToSlide(2)"></span>
+                <span class="dot" onclick="goToSlide(3)"></span>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav prev-btn" onclick="prevSlide()" id="prevBtn" disabled>
+                    <i class="fas fa-arrow-left mr-2"></i> Назад
+                </button>
+                <button class="btn-nav next-btn" onclick="nextSlide()" id="nextBtn">
+                    Далее <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/welcome.js"></script>
+</body>
+
+</html>

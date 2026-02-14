@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script>
+        if (!localStorage.getItem('hasVisited')) {
+            window.location.href = 'welcome.html';
+        }
+    </script>
+    <title>My Profile - FXbit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FXbit Trading Platform." />
+    <!-- favicon -->
+    <link rel="shortcut icon" href="images/favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="images/favicon/site.webmanifest">
+
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <!-- Icons -->
+    <link rel="stylesheet" href="css/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/icons.css">
+    <!-- Main css File -->
+    <link rel="stylesheet" href="css/style.min.css">
+    <link rel="stylesheet" href="css/fxbit-theme.css">
+    <link rel="stylesheet" href="css/sweetalert.css">
+    <link rel="stylesheet" href="css/liquid-glass.css">
+</head>
+
+<body class="crypt-dark cryptrade1">
+    <header>
+        <div class="crypt-header">
+            <div class="container-fluid crypt-container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center justify-content-between" style="height: 60px;">
+                            <!-- Left: Hamburger + Logo -->
+                            <div class="d-flex align-items-center">
+                                <button class="hamburger-btn" onclick="toggleSidebar()"><i
+                                        class="fas fa-bars"></i></button>
+                                <div class="crypt-logo ml-3">
+                                    <a href="#" onclick="window.location.reload(); return false;"><img
+                                            src="images/logo.png" style="height: 35px;"></a>
+                                </div>
+                            </div>
+
+                            <!-- Right: Actions -->
+                            <div class="d-flex align-items-center">
+                                <!-- Deposit Button -->
+
+
+                                <ul class="crypt-heading-menu d-none d-md-flex align-items-center mb-0"
+                                    style="list-style:none;">
+                                    <li><a href="trade.html">Trade</a></li>
+
+                                    <!-- Theme Toggle Removed -->
+
+                                    <li class="crypt-box-menu user-menu text-white">
+                                        <a href="profile.html"><i class="fas fa-user-circle mr-1"></i> Account</a>
+                                    </li>
+
+
+                                    <!-- Deposit (Moved here) -->
+                                    <li class="user-only" style="display:none;">
+                                        <a href="#" onclick="openDepositModal()"
+                                            class="btn btn-success btn-sm font-weight-bold text-white">
+                                            <i class="fas fa-wallet mr-1"></i> Deposit
+                                        </a>
+                                    </li>
+                                    <li class="user-only ml-2" style="display:none;">
+                                        <a href="#" onclick="openWithdrawModal()"
+                                            class="btn btn-danger btn-sm font-weight-bold text-white">
+                                            <i class="fas fa-arrow-down mr-1"></i> Withdraw
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Side Drawer (Sidebar) -->
+    <div class="side-drawer-overlay" onclick="toggleSidebar()"></div>
+    <div class="side-drawer" id="sideDrawer">
+        <div class="side-drawer-header">
+            <h4 class="text-white m-0">Menu</h4>
+            <button class="btn btn-sm btn-outline-secondary" onclick="toggleSidebar()"><i
+                    class="fas fa-times"></i></button>
+        </div>
+        <nav>
+            <a href="profile.html" class="side-drawer-link"><i class="fas fa-user-cog"></i> Account Settings</a>
+            <a href="#" onclick="openSupportChat(); toggleSidebar();"
+                class="side-drawer-link d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-headset"></i> Live Chat</span>
+                <span class="badge badge-danger support-badge-sidebar" style="display:none;">0</span>
+            </a>
+            <a href="#" onclick="openDepositModal(); toggleSidebar();" class="side-drawer-link"><i
+                    class="fas fa-wallet"></i> Deposit</a>
+            <a href="#" onclick="openWithdrawModal(); toggleSidebar();" class="side-drawer-link"><i
+                    class="fas fa-arrow-down"></i> Withdraw</a>
+            <a href="trade.html" class="side-drawer-link"><i class="fas fa-chart-line"></i> Trade</a>
+
+            <hr style="border-color: #333;">
+            <a href="#" class="side-drawer-link"><i class="fas fa-globe"></i> Language: EN</a>
+            <!-- Theme Toggle Removed -->
+        </nav>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div class="modal fade" id="depositModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="background: #111; color: white; border: 1px solid #333;">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title"><i class="fas fa-arrow-down mr-2 text-success"></i> Deposit Funds</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="text-muted">Select Asset/Network</label>
+                        <select class="form-control" id="deposit-network" onchange="updateDepositAddress()">
+                            <!-- Populated by JS -->
+                            <option value="USDT_TRC20">USDT (TRC20)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="text-muted">Deposit Amount</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="deposit-amount" placeholder="0.00"
+                                oninput="calculateDepositEquivalent()">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="deposit-ticker">USDT</span>
+                            </div>
+                        </div>
+                        <small class="text-muted d-block mt-1">Equivalent in USDT: <span id="dep-equiv"
+                                class="text-white font-weight-bold">0.00</span></small>
+                    </div>
+
+                    <div class="text-center my-4">
+                        <img id="deposit-qr" src="" class="deposit-qr" style="max-width: 150px; display:none;">
+                        <div class="input-group mb-2 mt-3">
+                            <input type="text" class="form-control text-center" id="deposit-address" value="Loading..."
+                                readonly style="font-size: 14px;">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" onclick="copyDepositAddress()"><i
+                                        class="far fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <small class="text-warning" id="deposit-warning">Only send to this address.</small>
+                    </div>
+
+                    <p class="small text-muted text-center">Funds will be credited after admin confirmation.</p>
+
+                    <button class="btn btn-success btn-block btn-lg font-weight-bold mt-4"
+                        onclick="confirmDeposit()">Confirm Deposit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div class="modal fade" id="withdrawModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="background: #111; color: white; border: 1px solid #333;">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title"><i class="fas fa-arrow-up mr-2 text-danger"></i> Withdraw Funds</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="text-muted">Select Asset</label>
+                        <select class="form-control" id="withdraw-asset" onchange="updateWithdrawBalance()">
+                            <option value="USDT">USDT (Tether)</option>
+                            <option value="BTC">Bitcoin (BTC)</option>
+                            <option value="ETH">Ethereum (ETH)</option>
+                            <option value="LTC">Litecoin (LTC)</option>
+                            <option value="XRP">Ripple (XRP)</option>
+                            <option value="BNB">Binance Coin (BNB)</option>
+                        </select>
+                        <small class="text-right d-block mt-1 text-muted">Available: <span id="withdraw-balance"
+                                class="text-white font-weight-bold">0.00</span> <span
+                                id="withdraw-ticker">USDT</span></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="text-muted">Withdraw Amount</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="withdraw-amount" placeholder="0.00">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    onclick="withdrawAll()">MAX</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="text-muted">Wallet Address</label>
+                        <input type="text" class="form-control" id="withdraw-address"
+                            placeholder="Enter recipient address">
+                        <small class="text-muted">Please double check the address. Transactions are
+                            irreversible.</small>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <small class="text-muted">Fee: <span id="withdraw-fee">0.00</span></small>
+                        <small class="text-muted">Total: <span id="withdraw-total">0.00</span></small>
+                    </div>
+
+                    <button class="btn btn-danger btn-block btn-lg font-weight-bold mt-3"
+                        onclick="confirmWithdraw()">Request Withdrawal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid crypt-container mt-4">
+        <div class="row">
+            <!-- Sidebar / Profile Info -->
+            <div class="col-md-4">
+                <div class="crypt-market-status mt-4">
+                    <div class="text-center p-4">
+                        <div class="profile-avatar mb-3" style="cursor: pointer;" onclick="editAvatar()"
+                            title="Click to Change Avatar">
+                            <img id="profile-img" src="images/avatar-placeholder.png" class="rounded-circle"
+                                style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #f0b90b;">
+                            <div class="mt-2"><small class="text-warning"><i class="fas fa-edit"></i> Edit Photo</small>
+                            </div>
+                        </div>
+                        <h4 class="text-white">
+                            <span id="profile-name">User Name</span>
+                            <small class="text-muted" style="cursor:pointer; font-size: 0.8rem;" onclick="editName()"><i
+                                    class="fas fa-pen"></i></small>
+                        </h4>
+                        <p id="profile-email" class="text-muted mb-4">email@example.com</p>
+
+                        <ul class="list-group list-group-flush text-left" style="background: transparent;">
+                            <li class="list-group-item bg-transparent text-white border-secondary">
+                                <strong><i class="fas fa-phone mr-2 text-muted"></i> Phone:</strong> <span
+                                    id="profile-phone" class="float-right text-muted">...</span>
+                            </li>
+                            <li class="list-group-item bg-transparent text-white border-secondary">
+                                <strong><i class="fas fa-globe mr-2 text-muted"></i> Country:</strong>
+                                <span class="float-right text-muted">
+                                    <span id="profile-country">...</span>
+                                    <i class="fas fa-pen ml-2" style="cursor:pointer;" onclick="editCountry()"></i>
+                                </span>
+                            </li>
+                            <li class="list-group-item bg-transparent text-white border-secondary">
+                                <strong><i class="fas fa-shield-alt mr-2 text-muted"></i> Role:</strong> <span
+                                    id="profile-role" class="float-right badge badge-success">User</span>
+                            </li>
+                            <li class="list-group-item bg-transparent text-white border-secondary">
+                                <strong><i class="far fa-calendar-alt mr-2 text-muted"></i> Joined:</strong> <span
+                                    id="profile-join-date" class="float-right text-muted">...</span>
+                            </li>
+                        </ul>
+
+                        <div class="mt-4">
+                            <button class="btn btn-outline-danger btn-block" onclick="userSystem.logout()"><i
+                                    class="fas fa-sign-out-alt"></i> Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Dashboard -->
+            <div class="col-md-8">
+
+                <!-- PnL Summary Cards -->
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="crypt-market-status p-3 mb-3 text-center">
+                            <h6 class="text-muted">Net Invested (Buys - Sells)</h6>
+                            <h3 id="pnl-invested" class="text-white">$0.00</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="crypt-market-status p-3 mb-3 text-center">
+                            <h6 class="text-muted">Current Portfolio Value</h6>
+                            <h3 id="pnl-value" class="text-info">$0.00</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="crypt-market-status p-3 mb-3 text-center">
+                            <h6 class="text-muted">Total Profit / Loss</h6>
+                            <h3 id="pnl-total" class="text-white">$0.00</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wallet Table -->
+                <div class="crypt-gross-market-cap mt-2">
+                    <div class="p-4">
+                        <h3>My Wallet Assets</h3>
+                        <div class="table-responsive mt-3">
+                            <table class="table table-striped" id="wallet-table">
+                                <thead>
+                                    <tr>
+                                        <th>Asset</th>
+                                        <th>Balance</th>
+                                        <th>Est. Value (USDT)</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tx History -->
+                <div class="crypt-gross-market-cap mt-4">
+                    <div class="p-4">
+                        <h3>All Transactions</h3>
+                        <div class="table-responsive mt-3">
+                            <table class="table table-striped" id="tx-history">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Action</th>
+                                        <th>Pair</th>
+                                        <th>Price</th>
+                                        <th>Total</th>
+                                        <th>Create/Close Reason</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Support Chat Button -->
+    <div class="support-btn" onclick="openSupportChat()">
+        <i class="fas fa-comments"></i>
+        <div class="support-unread-badge" id="support-badge">0</div>
+    </div>
+
+    <!-- Support Chat Modal -->
+    <div class="modal fade" id="supportModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background: #111; color: white; border: 1px solid #333;">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title"><i class="fas fa-headset mr-2 text-primary"></i> Support Chat</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="chat-messages-area" id="chat-messages">
+                        <div class="text-center text-muted mt-5">
+                            <i class="fas fa-comment-dots fa-3x mb-3"></i>
+                            <p>How can we help you today?</p>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-dark border-top border-secondary">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="chat-input" placeholder="Type a message...">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" onclick="sendSupportMessage()"><i
+                                        class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <script src="js/sweetalert.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Wait for auth state change
+            window.auth.onAuthStateChanged((user) => {
+                if (!user) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                // Global State for Real-Time Rendering
+                let state = {
+                    user: {},
+                    wallet: {},
+                    transactions: [],
+                    prices: {}
+                };
+
+                // 1. Fetch Prices (Single Fetch for now, could be real-time too)
+                API.getAllTickers().then(tickers => {
+                    if (tickers) tickers.forEach(t => state.prices[t.symbol.replace('USDT', '')] = parseFloat(t.lastPrice));
+                    state.prices['USDT'] = 1;
+                    renderAll();
+                });
+
+                // 2. Real-Time Listeners
+
+                // User Profile Listener
+                window.db.collection('users').doc(user.uid).onSnapshot(doc => {
+                    if (doc.exists) state.user = doc.data();
+                    renderProfileInfo(state.user, user);
+                });
+
+                // Wallet Listener
+                window.db.collection('wallets').doc(user.uid).onSnapshot(doc => {
+                    if (doc.exists) state.wallet = doc.data();
+                    else state.wallet = {};
+                    renderWalletAndPnL(state.wallet, state.transactions, state.prices);
+                });
+
+                // Transactions Listener
+                window.db.collection('transactions')
+                    .where('uid', '==', user.uid)
+                    .orderBy('time', 'desc')
+                    .limit(50)
+                    .onSnapshot(snapshot => {
+                        let txs = [];
+                        snapshot.forEach(doc => txs.push(doc.data()));
+                        state.transactions = txs;
+                        renderWalletAndPnL(state.wallet, state.transactions, state.prices);
+                    });
+
+                function renderAll() {
+                    // Helper to trigger potentially if prices load late
+                    renderWalletAndPnL(state.wallet, state.transactions, state.prices);
+                }
+
+                function renderProfileInfo(data, authUser) {
+                    // Defaults
+                    const safeName = data.name || authUser.displayName || 'User';
+                    const safeEmail = data.email || authUser.email;
+                    const safePhone = data.phone || 'N/A';
+                    const safeCountry = data.country || 'N/A';
+                    const safeRole = data.role || 'user';
+                    const joined = (data.createdAt && data.createdAt.toDate)
+                        ? data.createdAt.toDate().toLocaleDateString()
+                        : (authUser.metadata.creationTime ? new Date(authUser.metadata.creationTime).toLocaleDateString() : 'N/A');
+
+                    // Render Profile Info
+                    $('#profile-name').text(safeName);
+                    $('#profile-email').text(safeEmail);
+                    $('#profile-phone').text(safePhone);
+                    $('#profile-country').text(safeCountry);
+                    $('#profile-role').text(safeRole).removeClass('badge-success badge-danger')
+                        .addClass(safeRole === 'admin' ? 'badge-danger' : 'badge-success');
+                    $('#profile-join-date').text(joined);
+
+                    // Avatar
+                    if (data.photoURL) {
+                        $('#profile-img').attr('src', data.photoURL);
+                    } else {
+                        $('#profile-img').attr('src', 'https://www.gravatar.com/avatar/?d=mp&s=150');
+                    }
+                }
+            });
+        });
+
+        function renderWalletAndPnL(wallet, txs, prices) {
+            // wallet = passed fetched wallet info
+            // txs = passed fetched transactions
+
+            // 1. Calculate Wallet & Current Value
+            let currentPortfolioValue = 0;
+            const $wTbody = $('#wallet-table tbody');
+            $wTbody.empty();
+
+            for (const [asset, balance] of Object.entries(wallet)) {
+                if (balance > 0 || asset === 'USDT') {
+                    const price = prices[asset] || 0;
+                    const usdtVal = balance * price;
+                    currentPortfolioValue += usdtVal;
+
+                    $wTbody.append(`
+                        <tr>
+                            <td><div class="d-flex align-items-center"><img src="images/coins/${asset.toLowerCase()}.png" width="24" class="mr-2" onerror="this.style.display='none'"> <strong>${asset}</strong></div></td>
+                            <td>${balance.toFixed(8)}</td>
+                            <td>$${usdtVal.toFixed(2)}</td>
+                            <td><a href="trade.html#${asset}USDT" class="btn btn-sm btn-outline-warning">Trade</a></td>
+                        </tr>
+                    `);
+                }
+            }
+
+            // 2. Calculate Invested (Buys - Sells)
+            let totalBuys = 0;
+            let totalSells = 0;
+
+            // Populate Tx Table
+            const $txTbody = $('#tx-history tbody');
+            $txTbody.empty();
+
+            txs.forEach(tx => {
+                if (tx.type === 'BUY') totalBuys += (tx.total || 0);
+                if (tx.type === 'SELL') totalSells += (tx.total || 0);
+
+                let displayType = tx.type;
+                if (displayType === 'ADMIN_EDIT') displayType = 'Replenished';
+
+                let color = 'text-white';
+                if (displayType === 'BUY' || displayType === 'DEPOSIT') color = 'text-success';
+                if (displayType === 'SELL' || displayType === 'WITHDRAW') color = 'text-danger';
+                if (displayType === 'Replenished') color = 'text-warning';
+
+                const reason = tx.closeReason || 'Manual/Spot';
+                const sl = tx.stopLoss || '—';
+                const tp = tx.takeProfit || '—';
+
+                $txTbody.append(`
+                    <tr>
+                        <td><small>${new Date(tx.time ? tx.time.toDate() : Date.now()).toLocaleString()}</small></td>
+                        <td class="${color}"><strong>${displayType}</strong></td>
+                        <td>${tx.pair || tx.asset}</td>
+                        <td>${parseFloat(tx.price).toFixed(2)}</td>
+                        <td>${parseFloat(tx.total).toFixed(2)}</td>
+                        <td><span class="badge badge-secondary">${reason}</span></td>
+                        <td><small>SL: ${sl} | TP: ${tp}</small></td>
+                    </tr>
+                `);
+            });
+
+            const netInvested = totalBuys - totalSells;
+            const pnl = currentPortfolioValue - netInvested;
+
+            // Render PnL Cards
+            $('#pnl-invested').text('$' + netInvested.toLocaleString(undefined, { minimumFractionDigits: 2 }));
+            $('#pnl-value').text('$' + currentPortfolioValue.toLocaleString(undefined, { minimumFractionDigits: 2 }));
+
+            const pnlColor = pnl >= 0 ? 'text-success' : 'text-danger';
+            const pnlSign = pnl >= 0 ? '+' : '';
+            $('#pnl-total').html(`<span class="${pnlColor}">${pnlSign}$${pnl.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>`);
+        }
+
+        function editAvatar() {
+            swal({
+                title: "Change Profile Picture",
+                text: "Enter the URL of your new avatar image:",
+                type: "input",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                inputValue: $('#profile-img').attr('src'), // Pre-fill
+                inputPlaceholder: "https://example.com/my-photo.jpg"
+            }, function (inputValue) {
+                if (inputValue === false) return false;
+                if (inputValue === "") {
+                    swal.showInputError("You need to write something!");
+                    return false;
+                }
+                userSystem.updateProfile({ photoURL: inputValue });
+                $('#profile-img').attr('src', inputValue); // Instant Update
+            });
+        }
+
+        function editName() {
+            swal({
+                title: "Change Name",
+                text: "Enter your new name:",
+                type: "input",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                inputValue: $('#profile-name').text(), // Pre-fill
+                inputPlaceholder: "John Doe"
+            }, function (inputValue) {
+                if (inputValue === false) return false;
+                if (inputValue === "") return false;
+                userSystem.updateProfile({ name: inputValue });
+                $('#profile-name').text(inputValue); // Instant Update
+            });
+        }
+
+        function editCountry() {
+            swal({
+                title: "Change Country",
+                text: "Enter your country:",
+                type: "input",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                inputValue: $('#profile-country').text(), // Pre-fill
+                inputPlaceholder: "USA"
+            }, function (inputValue) {
+                if (inputValue === false) return false;
+                if (inputValue === "") return false;
+                userSystem.updateProfile({ country: inputValue });
+                $('#profile-country').text(inputValue); // Instant Update
+            });
+        }
+    </script>
+</body>
+
+</html>

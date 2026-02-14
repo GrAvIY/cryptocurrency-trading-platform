@@ -1,0 +1,329 @@
+/*
+|-------------------------------------------------------------
+| File: fxbit-theme.css
+| Description: "FXbit Style" - Black/White/Blue
+|-------------------------------------------------------------
+*/
+
+:root {
+    /* Core Colors (Dark - Default) */
+    --theme-bg: #0f172a;        /* Slate 900 */
+    --theme-surface: #1e2937;   /* Slate 800 */
+    --theme-surface-2: #334155; /* Slate 700 */
+    --theme-border: #1e2937;    /* Slate 800 */
+    
+    /* Accents */
+    --theme-accent: #F0B90B;    /* Binance Yellow */
+    --theme-accent-hover: #D8A70A;
+
+    /* Text */
+    --text-main: #e2e8f0;       /* Slate 200 */
+    --text-muted: #94a3b8;      /* Slate 400 */
+
+    /* Trading */
+    --trade-green: #0ECB81;
+    --trade-red: #F6465D;
+}
+
+/* Light Theme Removed */
+
+body.crypt-dark {
+    background-color: var(--theme-bg) !important;
+    background-image: none !important;
+    color: var(--text-main);
+}
+
+/* Header */
+.crypt-header {
+    background-color: var(--theme-surface) !important;
+    border-bottom: 1px solid var(--theme-border);
+    box-shadow: none;
+}
+
+/* Icons/Logo */
+.crypt-heading-menu {
+    display: flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+}
+
+.crypt-heading-menu li {
+    display: flex !important;
+    align-items: center !important;
+    margin: 0 15px !important;
+    padding: 0 !important;
+    height: auto !important;
+}
+
+.crypt-heading-menu li a {
+    color: var(--text-main) !important;
+    font-weight: 500;
+    display: flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+}
+
+.crypt-heading-menu li a:hover,
+.crypt-heading-menu li.active a {
+    color: var(--theme-accent) !important;
+    border-bottom: none !important; /* Removed border to keep "one plane" look */
+}
+
+/* Panels/Cards */
+.crypt-market-status,
+.crypt-gross-market-cap,
+.glass-panel {
+    background: var(--theme-surface) !important;
+    border: 1px solid var(--theme-border) !important;
+    border-radius: 4px !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+}
+
+/* Tabs */
+.nav-tabs .nav-link {
+    color: var(--text-muted);
+    border: none;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: transparent !important;
+    color: var(--theme-accent) !important;
+    border-bottom: 2px solid var(--theme-accent);
+    font-weight: bold;
+}
+
+/* Buttons */
+.btn-success,
+.btn-green,
+.btn-outline-success {
+    background-color: var(--theme-accent) !important;
+    border-color: var(--theme-accent) !important;
+    color: #FFFFFF !important;
+    /* White text on blue */
+    font-weight: bold;
+}
+
+.btn-success:hover,
+.btn-green:hover {
+    background-color: var(--theme-accent-hover) !important;
+    border-color: var(--theme-accent-hover) !important;
+}
+
+.btn-danger {
+    background-color: #F6465D !important;
+    border-color: #F6465D !important;
+}
+
+/* Inputs */
+.form-control {
+    background-color: var(--theme-surface-2) !important;
+    border: 1px solid var(--theme-border) !important;
+    color: var(--text-main) !important;
+    border-radius: 4px;
+}
+
+.form-control:focus {
+    border-color: var(--theme-accent) !important;
+    box-shadow: 0 0 0 1px var(--theme-accent) !important;
+}
+
+.input-group-text {
+    background-color: var(--theme-surface-2) !important;
+    border: 1px solid var(--theme-border) !important;
+    color: var(--text-muted) !important;
+}
+
+/* Tables */
+.table th {
+    border-top: none;
+    border-bottom: 1px solid var(--theme-border);
+    color: var(--text-muted);
+}
+
+.table td {
+    border-top: 1px solid var(--theme-border);
+    color: var(--text-main);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Text Colors */
+.text-success,
+.crypt-up {
+    color: var(--trade-green) !important;
+}
+
+.text-danger,
+.crypt-down {
+    color: var(--trade-red) !important;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Admin Sidebar */
+.admin-sidebar {
+    background: var(--theme-surface) !important;
+    border-right: 1px solid var(--theme-border);
+}
+
+.nav-icon.active {
+    background: var(--theme-accent) !important;
+    color: white !important;
+    box-shadow: 0 0 10px rgba(41, 121, 255, 0.3) !important;
+}
+
+/* SweetAlert overrides */
+.sweet-alert {
+    background-color: var(--theme-surface) !important;
+    border: 1px solid var(--theme-accent);
+}
+
+.sweet-alert h2,
+.sweet-alert p {
+    color: white !important;
+}
+
+.sweet-alert button.confirm {
+    background-color: var(--theme-accent) !important;
+    color: white !important;
+}
+
+/* Ticker Animation */
+@keyframes tickerAnim {
+    0% {
+        transform: translate3d(100%, 0, 0);
+    }
+
+    100% {
+        transform: translate3d(-100%, 0, 0);
+    }
+}
+
+.ticker-item {
+    display: inline-block;
+    margin-right: 40px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Social Login */
+
+
+
+/* Side Drawer (Mobile Menu) */
+.side-drawer {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100vh;
+    background-color: var(--theme-surface);
+    border-right: 1px solid var(--theme-border);
+    z-index: 10000;
+    transition: left 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.side-drawer.open {
+    left: 0;
+}
+
+.side-drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: none;
+    backdrop-filter: blur(2px);
+}
+
+.side-drawer-overlay.open {
+    display: block;
+}
+
+.side-drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--theme-border);
+    padding-bottom: 15px;
+}
+
+.side-drawer-link {
+    display: block;
+    padding: 12px 15px;
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    transition: background 0.2s;
+}
+
+.side-drawer-link:hover {
+    background-color: var(--theme-surface-2);
+    color: var(--theme-accent);
+    text-decoration: none;
+}
+
+.side-drawer-link i {
+    width: 25px;
+    text-align: center;
+    margin-right: 10px;
+    color: var(--text-muted);
+}
+
+/* Deposit Modal Styles */
+.deposit-qr {
+    display: block;
+    margin: 0 auto 15px;
+    max-width: 150px;
+    border: 5px solid white;
+    border-radius: 8px;
+}
+
+.currency-select-btn {
+    width: 100%;
+    text-align: left;
+    background: var(--theme-surface-2);
+    border: 1px solid var(--theme-border);
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.currency-option {
+    cursor: pointer;
+    padding: 10px;
+}
+
+.currency-option:hover {
+    background: var(--theme-surface-2);
+}
+
+/* Hamburger Button */
+.hamburger-btn {
+    font-size: 24px;
+    color: var(--text-main);
+    cursor: pointer;
+    margin-right: 15px;
+    background: none;
+    border: none;
+    padding: 5px;
+}
+
+.hamburger-btn:hover {
+    color: var(--theme-accent);
+}

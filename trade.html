@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script>
+        if (!localStorage.getItem('hasVisited')) {
+            window.location.href = 'welcome.html';
+        }
+    </script>
+    <title>FXbit - Pro Trading</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <!-- favicon -->
+    <link rel="shortcut icon" href="images/favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="images/favicon/site.webmanifest">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/style.min.css">
+    <link rel="stylesheet" href="css/fxbit-theme.css">
+    <link rel="stylesheet" href="css/sweetalert.css">
+    <link rel="stylesheet" href="css/liquid-glass.css">
+    <style>
+        .nav-tabs .nav-link.active {
+            background-color: #1a1e29;
+            border-color: #383e50;
+            color: #ffffff;
+        }
+
+        .crypt-tab-content {
+            border: none;
+        }
+
+        /* Neon Green Button Styles */
+        .btn-neon-green {
+            background: linear-gradient(135deg, #0ba360, #3cce7e) !important;
+            border: none !important;
+            border-radius: var(--radius-btn) !important;
+            box-shadow: 0 4px 15px rgba(60, 206, 126, 0.4) !important;
+            color: #000 !important;
+            font-weight: 700 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-neon-green:hover {
+            transform: scale(1.02) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(60, 206, 126, 0.6) !important;
+        }
+
+        .btn-neon-green:active {
+            transform: scale(0.98);
+        }
+
+        /* Neon Green Icon/Text Styles */
+        .text-neon-green {
+            color: #3cce7e !important;
+            text-shadow: 0 0 12px rgba(60, 206, 126, 0.5);
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body class="crypt-dark">
+
+    <!-- Ticker Marquee -->
+    <div id="ticker-wrapper"
+        style="background: #000; border-bottom: 1px solid #333; height: 40px; overflow: hidden; white-space: nowrap; position: relative;">
+        <div id="ticker-content"
+            style="display: inline-block; padding-top: 8px; animation: tickerAnim 30s linear infinite;">
+            <span class="text-muted">Loading Markets...</span>
+        </div>
+    </div>
+
+    <header>
+        <div class="crypt-header">
+            <div class="container-fluid crypt-container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center justify-content-between" style="height: 60px;">
+                            <!-- Left: Hamburger + Logo -->
+                            <div class="d-flex align-items-center">
+                                <button class="hamburger-btn" onclick="toggleSidebar()"><i
+                                        class="fas fa-bars"></i></button>
+                                <div class="crypt-logo ml-3">
+                                    <a href="#" onclick="window.location.reload(); return false;"><img
+                                            src="images/logo.png" style="height: 45px;" loading="lazy"
+                                            alt="FXbit Logo"></a>
+                                </div>
+                            </div>
+
+                            <!-- Right: Actions -->
+                            <div class="d-flex align-items-center">
+                                <!-- User Actions -->
+
+
+                                <ul class="crypt-heading-menu d-none d-md-flex align-items-center mb-0"
+                                    style="list-style:none;">
+                                    <li><a href="trade.html">Trade</a></li>
+
+                                    <!-- Theme Toggle Removed -->
+
+                                    <!-- User Menu -->
+                                    <li class="crypt-box-menu user-menu text-white user-only" style="display:none;">
+                                        <a href="profile.html"><i class="fas fa-user-circle mr-1"></i> Account</a>
+                                    </li>
+
+
+
+                                    <!-- Deposit (Moved here) -->
+                                    <li class="user-only" style="display:none;">
+                                        <a href="#" onclick="openDepositModal()"
+                                            class="btn btn-success btn-sm font-weight-bold text-white">
+                                            <i class="fas fa-wallet mr-1"></i> Deposit
+                                        </a>
+                                    </li>
+                                    <li class="user-only ml-2" style="display:none;">
+                                        <a href="#" onclick="openWithdrawModal()"
+                                            class="btn btn-neon-green btn-sm font-weight-bold text-white">
+                                            <i class="fas fa-arrow-down mr-1"></i> Withdraw
+                                        </a>
+                                    </li>
+
+                                    <!-- Guest Menu -->
+                                    <li class="guest-only"><a href="login.html" class="text-white">Login</a></li>
+                                    <li class="guest-only"><a href="register.html"
+                                            class="btn btn-outline-warning btn-sm">Register</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Side Drawer (Sidebar) -->
+    <div class="side-drawer-overlay" onclick="toggleSidebar()"></div>
+    <div class="side-drawer" id="sideDrawer">
+        <div class="side-drawer-header">
+            <h4 class="text-white m-0">Menu</h4>
+            <button class="btn btn-sm btn-outline-secondary" onclick="toggleSidebar()"><i
+                    class="fas fa-times"></i></button>
+        </div>
+        <nav>
+            <a href="profile.html" class="side-drawer-link"><i class="fas fa-user-cog"></i> Account Settings</a>
+            <a href="#" onclick="openSupportChat(); toggleSidebar();"
+                class="side-drawer-link d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-headset"></i> Live Chat</span>
+                <span class="badge badge-danger support-badge-sidebar" style="display:none;">0</span>
+            </a>
+            <a href="#" onclick="openDepositModal(); toggleSidebar();" class="side-drawer-link"><i
+                    class="fas fa-wallet"></i> Deposit</a>
+            <a href="#" onclick="openWithdrawModal(); toggleSidebar();" class="side-drawer-link"><i
+                    class="fas fa-arrow-down"></i> Withdraw</a>
+            <a href="trade.html" class="side-drawer-link"><i class="fas fa-chart-line"></i> Trade</a>
+
+            <hr style="border-color: #333;">
+            <a href="#" onclick="changeLanguage()" class="side-drawer-link"><i class="fas fa-globe"></i> Language:
+                EN</a>
+            <!-- Theme Toggle Removed -->
+        </nav>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div class="modal fade" id="depositModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="background: #111; color: white; border: 1px solid #333;">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title"><i class="fas fa-arrow-down mr-2 text-success"></i> Deposit Funds</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="text-muted">Select Asset/Network</label>
+                        <select class="form-control" id="deposit-network" onchange="updateDepositAddress()">
+                            <!-- Populated by JS -->
+                            <option value="USDT_TRC20">USDT (TRC20)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="text-muted">Deposit Amount</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="deposit-amount" placeholder="0.00"
+                                oninput="calculateDepositEquivalent()">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="deposit-ticker">USDT</span>
+                            </div>
+                        </div>
+                        <small class="text-muted d-block mt-1">Equivalent in USDT: <span id="dep-equiv"
+                                class="text-white font-weight-bold">0.00</span></small>
+                    </div>
+
+                    <div class="text-center my-4">
+                        <img id="deposit-qr" src="" class="deposit-qr" style="max-width: 150px; display:none;"
+                            loading="lazy" alt="Deposit QR Code">
+                        <div class="input-group mb-2 mt-3">
+                            <input type="text" class="form-control text-center" id="deposit-address" value="Loading..."
+                                readonly style="font-size: 14px;">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" onclick="copyDepositAddress()"><i
+                                        class="far fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <small class="text-warning" id="deposit-warning">Only send to this address.</small>
+                    </div>
+
+                    <p class="small text-muted text-center">Funds will be credited after admin confirmation.</p>
+
+                    <button class="btn btn-success btn-block btn-lg font-weight-bold mt-4"
+                        onclick="confirmDeposit()">Confirm Deposit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div class="modal fade" id="withdrawModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="background: #111; color: white; border: 1px solid #333;">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title"><i class="fas fa-arrow-up mr-2 text-neon-green"></i> Withdraw Funds</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="text-muted">Select Asset</label>
+                        <select class="form-control" id="withdraw-asset" onchange="updateWithdrawBalance()">
+                            <option value="USDT">USDT (Tether)</option>
+                            <option value="BTC">Bitcoin (BTC)</option>
+                            <option value="ETH">Ethereum (ETH)</option>
+                            <option value="LTC">Litecoin (LTC)</option>
+                            <option value="XRP">Ripple (XRP)</option>
+                            <option value="BNB">Binance Coin (BNB)</option>
+                        </select>
+                        <small class="text-right d-block mt-1 text-muted">Available: <span id="withdraw-balance"
+                                class="text-white font-weight-bold">0.00</span> <span
+                                id="withdraw-ticker">USDT</span></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="text-muted">Withdraw Amount</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="withdraw-amount" placeholder="0.00">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    onclick="withdrawAll()">MAX</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="text-muted">Wallet Address</label>
+                        <input type="text" class="form-control" id="withdraw-address"
+                            placeholder="Enter recipient address">
+                        <small class="text-muted">Please double check the address. Transactions are
+                            irreversible.</small>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <small class="text-muted">Fee: <span id="withdraw-fee">0.00</span></small>
+                        <small class="text-muted">Total: <span id="withdraw-total">0.00</span></small>
+                    </div>
+
+                    <button class="btn btn-neon-green btn-block btn-lg font-weight-bold mt-3"
+                        onclick="confirmWithdraw()">Request Withdrawal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid crypt-container mt-3">
+        <div class="row sm-gutters">
+
+            <!-- Sidebar / Ticker -->
+            <div class="col-md-3 col-lg-2">
+                <div class="crypt-market-status mt-4">
+                    <h6 class="text-muted text-center mb-3">Markets</h6>
+                    <ul class="nav nav-tabs flex-column" id="crypt-tab" style="border:none;">
+                        <li class="text-center p-3">Loading...</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-6 col-lg-8">
+                <!-- Header Info -->
+                <div class="crypt-gross-market-cap mt-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="crypt-cointext align-middle">
+                                <h3 class="coin-name text-white"><span>BTC/USDT</span></h3>
+                                <div class="coin-body">
+                                    <span class="coin-body-lastp h4">...</span>
+                                    <span class="coin-body-lastpc-mini h5 ml-2"><span>...</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart -->
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-outline-secondary text-white"
+                            onclick="tradingSystem.setChartType('candlestick')">Candle</button>
+                        <button type="button" class="btn btn-outline-secondary text-white"
+                            onclick="tradingSystem.setChartType('line')">Line</button>
+                        <button type="button" class="btn btn-outline-secondary text-white"
+                            onclick="tradingSystem.setChartType('area')">Area</button>
+                    </div>
+                </div>
+                <div class="tradingview-widget-container mb-3">
+                    <div id="DARK_CHART_BTC" style="height: 450px; background: #131722;"></div>
+                </div>
+
+                <!-- Trading Forms (Market Order) -->
+                <!-- Trading Forms (Tabs: Spot / Futures) -->
+                <div class="crypt-market-status crypt-buysell-box">
+                    <ul class="nav nav-tabs nav-fill" id="tradeTabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="spot-tab-link" data-toggle="tab" href="#spot-tab" role="tab"
+                                aria-controls="spot-tab" aria-selected="true">Spot</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="futures-tab-link" data-toggle="tab" href="#futures-tab" role="tab"
+                                aria-controls="futures-tab" aria-selected="false">Futures (100x)</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="tradeTabsContent">
+                        <!-- SPOT TAB -->
+                        <div class="tab-pane fade show active" id="spot-tab" role="tabpanel"
+                            aria-labelledby="spot-tab-link">
+                            <div class="crypt-boxed-area">
+                                <div class="row no-gutters">
+                                    <!-- BUY -->
+                                    <div class="col-md-6 p-4 border-right border-secondary">
+                                        <h5 class="text-success mb-3">Buy <span class="base-asset-name">BTC</span></h5>
+                                        <p class="text-small text-muted mb-3">Use USDT to buy coins</p>
+
+                                        <div class="form-group">
+                                            <label class="small text-muted">Price (Market)</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="buy-price" readonly>
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text quote-asset-name">USDT</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="small text-muted">Amount</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="buy-amount"
+                                                    placeholder="Amount">
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text base-asset-name">BTC</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="small text-muted">Total Cost</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="buy-total"
+                                                    placeholder="Total">
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text quote-asset-name">USDT</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <small>Available:</small>
+                                            <strong class="available-quote">0.00 USDT</strong>
+                                        </div>
+                                        <button class="btn btn-success btn-block btn-lg btn-buy-trigger">BUY</button>
+                                    </div>
+
+                                    <!-- SELL -->
+                                    <div class="col-md-6 p-4">
+                                        <h5 class="text-danger mb-3">Sell <span class="base-asset-name">BTC</span></h5>
+                                        <p class="text-small text-muted mb-3">Sell coins for USDT</p>
+
+                                        <div class="form-group">
+                                            <label class="small text-muted">Price (Market)</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="sell-price" readonly>
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text quote-asset-name">USDT</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="small text-muted">Amount</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="sell-amount"
+                                                    placeholder="Amount">
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text base-asset-name">BTC</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="small text-muted">Total Value</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="sell-total"
+                                                    placeholder="Total">
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text quote-asset-name">USDT</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <small>Available:</small>
+                                            <strong class="available-base">0.00 BTC</strong>
+                                        </div>
+                                        <button class="btn btn-danger btn-block btn-lg btn-sell-trigger">SELL</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FUTURES TAB -->
+                        <div class="tab-pane fade" id="futures-tab" role="tabpanel" aria-labelledby="futures-tab-link">
+                            <div class="crypt-boxed-area p-4">
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <label class="text-white">Leverage: <span id="leverage-val"
+                                                class="text-warning font-weight-bold">10x</span></label>
+                                        <input type="range" class="custom-range" id="leverage-slider" min="1" max="100"
+                                            value="10" oninput="$('#leverage-val').text(this.value + 'x')">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="small text-muted">Amount (Margin)</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="f-amount"
+                                                    placeholder="USD Amount">
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text">USDT</span></div>
+                                            </div>
+                                        </div>
+                                        <!-- SL/TP Inputs -->
+                                        <div class="form-row">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label class="small text-muted">Stop Loss (Price)</label>
+                                                    <input type="number" class="form-control" id="f-sl"
+                                                        placeholder="Stop Price" min="0" step="any">
+                                                    <small class="form-text text-muted" style="font-size: 10px;">Stop
+                                                        Price (e.g. 45000)</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label class="small text-muted">Take Profit (Price)</label>
+                                                    <input type="number" class="form-control" id="f-tp"
+                                                        placeholder="Target Price" min="0" step="any">
+                                                    <small class="form-text text-muted" style="font-size: 10px;">Target
+                                                        Price (e.g. 50000)</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <small>Available:</small>
+                                            <strong class="available-quote">0.00 USDT</strong>
+                                        </div>
+                                        <div class="d-flex">
+                                            <button
+                                                class="btn btn-success flex-fill mr-1 btn-long-trigger">Long</button>
+                                            <button
+                                                class="btn btn-danger flex-fill ml-1 btn-short-trigger">Short</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="border-secondary">
+                                <div class="d-flex justify-content-between text-muted small">
+                                    <span>Est. Liq. Price: <span class="text-white" id="est-liq">---</span></span>
+                                    <span>Margin Required: <span class="text-white" id="est-margin">0.00</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Book / Trades -->
+            <div class="col-md-3 col-lg-2">
+                <div class="crypt-market-status mt-4">
+                    <h6 class="mb-2">Order Book</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody id="asks-body"></tbody>
+                            <tbody>
+                                <tr class="text-center">
+                                    <td colspan="2"><strong class="current-price-display">...</strong></td>
+                                </tr>
+                            </tbody>
+                            <tbody id="bids-body"></tbody>
+                        </table>
+                    </div>
+
+                    <h6 class="mt-4 mb-2">Recent Trades</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped" id="recent-trades">
+                            <thead>
+                                <tr>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom: History & Balance -->
+        <div class="row mt-4 mb-5">
+            <div class="col-8">
+                <ul class="nav nav-tabs" id="historyTabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="orders-tab-link" data-toggle="tab" href="#orders-tab"
+                            role="tab">Active Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="positions-tab-link" data-toggle="tab" href="#positions-tab"
+                            role="tab">Positions (Futures)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="history-tab-link" data-toggle="tab" href="#history-tab"
+                            role="tab">History</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="historyTabsContent">
+                    <div class="tab-pane fade show active" id="orders-tab" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="active-orders">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Pair</th>
+                                        <th>Type</th>
+                                        <th>Price</th>
+                                        <th>Amount</th>
+                                        <th>Total</th>
+                                        <th>Reason</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="positions-tab" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="active-positions">
+                                <thead>
+                                    <tr>
+                                        <th>Symbol</th>
+                                        <th>Size</th>
+                                        <th>Entry Price</th>
+                                        <th>Mark Price</th>
+                                        <th>Liq. Price</th>
+                                        <th>Margin</th>
+                                        <th>SL / TP</th>
+                                        <th>PnL (ROE%)</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- History Tab -->
+                    <div class="tab-pane fade" id="history-tab" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="history-positions">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Symbol</th>
+                                        <th>Type</th>
+                                        <th>Entry Price</th>
+                                        <th>Close Price</th>
+                                        <th>PnL</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <h5 class="text-white">Your Wallet</h5>
+                <div class="table-responsive">
+                    <table class="table table-striped" id="balance">
+                        <thead>
+                            <tr>
+                                <th>Asset</th>
+                                <th>Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center p-4 mt-5 border-top border-secondary">
+            <p class="text-white small">&copy; FXbit entities are regulated by the Financial Services Regulatory
+                Authority (FSRA) of the Abu Dhabi Global Market (ADGM) as follows: (1) FXbit is a recognized investment
+                exchange (derivatives) authorized to operate a multilateral trading facility; (2) FXbit is a recognized
+                clearinghouse authorized to provide custody services and operate a central securities depository; (3)
+                FXbit is authorized to engage in the following regulated activities: (i) dealing in investments as a
+                principal; (ii) dealing in investments as an agent; (iii) arranging investments; (iv) managing assets;
+                (v) providing money services; and (vi) arranging custody.</p>
+
+            <p class="text-white small">&copy;Risk Warning: Prices of virtual assets can be volatile. The value of your
+                investments can go up as well
+                as down, and you may not get back the amount you invested. You are solely responsible for your
+                investment decisions, and FXbit is not liable for any trading losses you may incur.
+                FXbit© 2026</p>
+        </footer>
+
+        <!-- Support Chat Button -->
+        <div class="support-btn" onclick="openSupportChat()">
+            <i class="fas fa-comments"></i>
+            <div class="support-unread-badge" id="support-badge">0</div>
+        </div>
+
+        <!-- Support Chat Modal -->
+        <div class="modal fade" id="supportModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="background: #111; color: white; border: 1px solid #333;">
+                    <div class="modal-header border-bottom-0">
+                        <h5 class="modal-title"><i class="fas fa-headset mr-2 text-primary"></i> Support Chat</h5>
+                        <button type="button" class="close text-white"
+                            data-dismiss="modal"><span>&times;</span></button>
+                    </div>
+                    <div class="modal-body p-0">
+                        <div class="chat-messages-area" id="chat-messages">
+                            <!-- Messages will appear here -->
+                            <div class="text-center text-muted mt-5">
+                                <i class="fas fa-comment-dots fa-3x mb-3"></i>
+                                <p>How can we help you today?</p>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-dark border-top border-secondary">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="chat-input" placeholder="Type a message...">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" onclick="sendSupportMessage()"><i
+                                            class="fas fa-paper-plane"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/jquery.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="bootstrap/js/bootstrap.bundle.js"></script>
+        <script src="bootstrap/js/bootstrap.js"></script>
+        <!-- Firebase SDKs -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+        <script src="js/firebase-config.js"></script>
+
+        <script src="js/sweetalert.js"></script>
+        <!-- TradingView Widget -->
+        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+        <script src="js/main.js"></script>
+</body>
+
+</html>
+<!--Xelion-->
